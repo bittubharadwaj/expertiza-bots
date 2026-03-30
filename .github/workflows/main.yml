@@ -156,16 +156,11 @@ jobs:
           path: coverage/
 
       - name: Upload code-coverage report to code-climate
+        uses: paambaati/codeclimate-action@v9
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        run: |
-          export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
-          curl -sL -o artifacts.tar.gz https://github.com/qltysh-archive/test-reporter/releases/download/v0.11.1/artifacts.tar.gz
-          tar xzf artifacts.tar.gz
-          mv ./artifacts/bin/test-reporter-0.11.1-linux-amd64 ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-          ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
-          ./cc-test-reporter after-build -t simplecov
+        with:
+          coverageLocations: coverage/coverage.json:simplecov
 
   docker:
     needs: test
