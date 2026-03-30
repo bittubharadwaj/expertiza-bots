@@ -160,7 +160,7 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
           export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          curl -L https://github.com/codeclimate/cc-test-reporter/releases/latest/download/cc-test-reporter-linux-amd64 > ./cc-test-reporter
           chmod +x ./cc-test-reporter
           ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
           ./cc-test-reporter after-build -t simplecov
