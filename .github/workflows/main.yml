@@ -156,11 +156,14 @@ jobs:
           path: coverage/
 
       - name: Upload code-coverage report to code-climate
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
           export GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
-          gem install codeclimate-test-reporter
-          cc-test-reporter sum-coverage coverage/codeclimate.*.json 
-          cc-test-reporter after-build -t simplecov -r ${{ secrets.CC_TEST_REPORTER_ID }}
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter sum-coverage coverage/codeclimate.*.json
+          ./cc-test-reporter after-build -t simplecov
 
   docker:
     needs: test
